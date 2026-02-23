@@ -1,3 +1,5 @@
+// Tento soubor definuje typografii aplikace (styly textu)
+
 package com.matvii.application.ui.theme
 
 import androidx.compose.material3.Typography
