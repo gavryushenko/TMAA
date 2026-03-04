@@ -75,7 +75,7 @@ object Routes {
     const val FAVORITES = "favorites"
 }
 
-
+// some modification
 // ------------------------------------------------------------
 // MainActivity - vstupní bod aplikace: notifikace + Compose UI + navigace
 // ------------------------------------------------------------
