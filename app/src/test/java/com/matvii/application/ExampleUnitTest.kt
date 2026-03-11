@@ -1,5 +1,6 @@
 package com.matvii.application
 
+// Základní unit test běžící na lokálním JVM.
 import org.junit.Test
 
 import org.junit.Assert.*
