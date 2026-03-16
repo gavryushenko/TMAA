@@ -1,5 +1,6 @@
 package com.matvii.application
 
+// Základní instrumentační test běžící na zařízení/emulátoru.
 import androidx.test.platform.app.InstrumentationRegistry
 import androidx.test.ext.junit.runners.AndroidJUnit4
 

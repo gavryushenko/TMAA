@@ -1,6 +1,6 @@
 // Tento soubor obsahuje definice barev, které se používají v Material3 tématu aplikace
 
-package com.matvii.application.ui.theme
+package com.matvii.application.theme
 
 import androidx.compose.ui.graphics.Color
 

@@ -1,6 +1,6 @@
 // Tento soubor definuje Material3 téma aplikace (barvy + typografie) a umí přepínat dark/light režim
 
-package com.matvii.application.ui.theme
+package com.matvii.application.theme
 
 import android.app.Activity
 import android.os.Build

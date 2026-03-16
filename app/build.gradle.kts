@@ -1,21 +1,24 @@
+import com.android.build.api.dsl.ApplicationExtension
+import org.jetbrains.kotlin.gradle.dsl.JvmTarget
+import org.jetbrains.kotlin.gradle.dsl.KotlinAndroidProjectExtension
+
 // Tento soubor je hlavní build konfigurace modulu :app
 
 // --- Deklarace pluginů ---
 plugins {
     alias(libs.plugins.android.application)
+    alias(libs.plugins.kotlin.android)
     alias(libs.plugins.kotlin.compose)
+    id("org.jetbrains.kotlin.kapt")
+    alias(libs.plugins.google.services) // Aktivuje načtení konfigurace Firebase pro modul aplikace
 }
 
 
 // --- Hlavní konfigurace Android aplikace ---
-android {
+extensions.configure<ApplicationExtension> {
     namespace = "com.matvii.application" // Definuje jmenný prostor aplikace pro generovaný kód
     // Určuje verzi Android SDK, se kterou se aplikace kompiluje
-    compileSdk {
-        version = release(36) {
-            minorApiLevel = 1
-        }
-    }
+    compileSdk = 36
 
     // Základní parametry aplikace
     defaultConfig {
@@ -27,6 +30,10 @@ android {
 
         // Nastavení testovacího runneru pro instrumentační testy
         testInstrumentationRunner = "androidx.test.runner.AndroidJUnitRunner"
+
+        // API klíč bereme pouze z proměnné prostředí, aby nebyl uložen v repozitáři.
+        val apiKey = providers.environmentVariable("OPENWEATHER_API_KEY").getOrElse("")
+        buildConfigField("String", "OPENWEATHER_API_KEY", "\"$apiKey\"")
     }
 
     // Definice různých typů sestavení aplikace
@@ -51,6 +58,14 @@ android {
     // Aktivace vybraných funkcí Android build systému
     buildFeatures {
         compose = true // Aktivuje podporu Jetpack Compose v projektu
+        buildConfig = true
+    }
+}
+
+// Sjednocení JVM targetu pro Java i Kotlin úlohy, aby build nepadal na nekompatibilitě.
+extensions.configure<KotlinAndroidProjectExtension> {
+    compilerOptions {
+        jvmTarget.set(JvmTarget.JVM_11)
     }
 }
 
@@ -58,6 +73,7 @@ android {
 dependencies {
     implementation(libs.androidx.core.ktx)
     implementation(libs.androidx.lifecycle.runtime.ktx)
+    implementation(libs.androidx.lifecycle.viewmodel.compose)
     implementation(libs.androidx.activity.compose)
     implementation(platform(libs.androidx.compose.bom))
     implementation(libs.androidx.compose.ui)
@@ -67,7 +83,11 @@ dependencies {
     implementation(libs.androidx.navigation.compose)
     implementation(libs.retrofit)
     implementation(libs.retrofit.converter.gson)
-    implementation(libs.androidx.datastore.preferences)
+    implementation(libs.androidx.room.runtime)
+    implementation(libs.androidx.room.ktx)
+    add("kapt", libs.androidx.room.compiler)
+    implementation(platform(libs.firebase.bom))
+    implementation(libs.firebase.firestore)
     testImplementation(libs.junit)
     androidTestImplementation(libs.androidx.junit)
     androidTestImplementation(libs.androidx.espresso.core)
