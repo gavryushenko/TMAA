@@ -12,13 +12,27 @@ import androidx.compose.ui.Modifier
 import androidx.navigation.compose.NavHost
 import androidx.navigation.compose.composable
 import androidx.navigation.compose.rememberNavController
-import com.matvii.application.theme.ApplicationTheme
-import com.matvii.application.ui.screen.FavoritesScreen
-import com.matvii.application.ui.screen.MainScreen
-import com.matvii.application.ui.screen.Routes
-import com.matvii.application.ui.screen.SearchScreen
-import com.matvii.application.util.NotificationHelper
+import com.matvii.application.ui.theme.ApplicationTheme
+import kotlinx.coroutines.launch
+import retrofit2.Retrofit
+import retrofit2.converter.gson.GsonConverterFactory
+import retrofit2.http.GET
+import retrofit2.http.Query
+import kotlin.math.round
 
+// ------------------------------------------------------------
+// Navigační cesty - názvy obrazovek pro NavHost
+// ------------------------------------------------------------
+object Routes {
+    const val MAIN = "main"
+    const val SEARCH = "search"
+    const val FAVORITES = "favorites"
+}
+
+// some modification
+// ------------------------------------------------------------
+// MainActivity - vstupní bod aplikace: notifikace + Compose UI + navigace
+// ------------------------------------------------------------
 class MainActivity : ComponentActivity() {
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
